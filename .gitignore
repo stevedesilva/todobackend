@@ -1,0 +1,9 @@
+# virtual env
+venv
+
+# python src files
+*.pyc
+
+# sqlite db files
+*.sqlite3
+
