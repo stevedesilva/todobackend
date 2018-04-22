@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite name="nosetests" tests="1" errors="1" failures="0" skip="0"><testcase classname="nose.failure.Failure" name="runTest" time="0.001"><error type="exceptions.OSError" message="No such file /Users/stevedesilva/Documents/Workspace/cd-docker-ansible/code/todobackend/src/xunit-file=./unittests.xml"><![CDATA[Traceback (most recent call last):
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/case.py", line 331, in run
+    testMethod()
+  File "/Users/stevedesilva/Documents/Workspace/cd-docker-ansible/code/todobackend/venv/lib/python2.7/site-packages/nose/failure.py", line 42, in runTest
+    raise self.exc_class(self.exc_val)
+OSError: No such file /Users/stevedesilva/Documents/Workspace/cd-docker-ansible/code/todobackend/src/xunit-file=./unittests.xml
+]]></error></testcase></testsuite>
