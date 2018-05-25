@@ -1,9 +1,21 @@
-# virtual env
+
+
+# Ignore the virtual environment
 venv
 
-# python src files
+# Ignore compiled Python source files
 *.pyc
 
-# sqlite db files
+# Ignore SQLite database files
 *.sqlite3
 
+# Ignore test artifacts
+src/.coverage
+src/*.xml
+
+# Ignore eggs
+src/*egg-info
+
+# Ignore build and test artifacts
+target
+reports

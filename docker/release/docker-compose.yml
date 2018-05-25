@@ -1,0 +1,73 @@
+# environment mysql settings must match 'db' service settings
+app:
+  build: ../../
+  dockerfile: docker/release/Dockerfile
+  volumes_from:
+    - webroot
+  links:
+    - db
+  environment:
+    DJANGO_SETTINGS_MODULE: todobackend.settings.release
+    MYSQL_HOST: db
+    MYSQL_USER: todo
+    MYSQL_PASSWORD: password
+    #DEBUG: "true"
+  command:
+    - uwsgi # uwsgi container
+    - "--socket /var/www/todobackend/todobackend.sock" # file the uwsgi reads/writes to
+    - "--chmod-socket=666" # read/write access to all use
+    - "--module todobackend.wsgi" # maps to todobackend/settings/wsgi.py file - module used to call the application
+    - "--master" # spawn master and worker processes
+    - "--die-on-term" # uWSGI shut down on sig term signal from docker
+
+test:
+  image: silvade/todobackend-specs
+  links:
+    - nginx
+  environment:
+    URL: http://nginx:8000/todos
+    JUNIT_REPORT_PATH: /reports/acceptance.xml
+    JUNIT_REPORT_STACK: 1
+  command: --reporter mocha-jenkins-reporter
+
+# nginx load all files in the folder /etc/nginx/conf.d/
+# Expose ports. specify both ports (HOST:CONTAINER)
+nginx:
+  image: nginx
+  links:
+    - app
+  volumes:
+    - ./todobackend.conf:/etc/nginx/conf.d/todobackend.conf # map /todobackend.conf locally -> image /etc/nginx/conf.d/todobackend.conf
+  ports:
+    - "8000:8000" # map 8000 on our docker host (external) to 8000 on our NGINX service container (internal)
+  volumes_from:
+    - webroot
+
+# volume container : host the web root folder for the application (static files and socket file)
+webroot:
+  build: ../../
+  dockerfile: docker/release/Dockerfile
+  volumes:
+    - /var/www/todobackend # expose volume as /var/www/todobackend
+  entrypoint: "true" # volume container exits without doing anything
+  
+# Expose ports without publishing them to the host machine - they’ll only be accessible to linked services. Only the internal port can be specified.
+db:
+  image: mysql:5.6
+  expose:
+    - "3306" # expose port inside our release environment (NOT EXTERNALLY)
+  environment:
+    MYSQL_DATABASE: todobackend
+    MYSQL_USER: todo
+    MYSQL_PASSWORD: password
+    MYSQL_ROOT_PASSWORD: password
+
+agent:
+  image: silvade/ansible
+  volumes:
+    - ../../ansible/probe.yml:/ansible/site.yml
+  links:
+    - db
+  environment:
+    PROBE_HOST: "db"
+    PROBE_PORT: "3306"
