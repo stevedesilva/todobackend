@@ -1,0 +1,5 @@
+FROM nginx
+MAINTAINER Steve de Silva <steve.desilva@gmail.com>
+
+COPY todobackend.conf /etc/nginx/conf.d/todobackend.conf
+

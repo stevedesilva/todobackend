@@ -1,2 +1,4 @@
 # ignore the virtual environment
 venv
+# ignore the reports
+reports
