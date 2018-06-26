@@ -16,8 +16,8 @@ class TestCreateTodoItem(APITestCase):
   def setUp(self):
     self.response = createItem(self.client)
 
+  # self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
   def test_received_201_created_status_code(self):
-	# self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
     self.assertEqual(self.response.status_code, status.HTTP_200_OK)
 	
   def test_received_location_header_hyperlink(self):
