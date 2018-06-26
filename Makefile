@@ -28,11 +28,9 @@ BUILD_TAG ?= $(BUILD_EXPRESSION)
 # Check and Inspect Logic
 INSPECT := $$(docker-compose -p $$1 -f $$2 ps -q $$3 | xargs -I ARGS docker inspect -f "{{ .State.ExitCode }}" ARGS)
 
-
-
 CHECK := @bash -c '\
-	if [[ $(INSPECT) -ne 0 ]]; \
-	then exit $(INSPECT); fi' VALUE
+  if [[ $(INSPECT) -ne 0 ]]; \
+  then exit $(INSPECT); fi' VALUE
 
 # Public docker hub registry
 DOCKER_REGISTRY ?= docker.io
@@ -56,7 +54,7 @@ test:
 	${INFO} "Running tests..."
 	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) up test
 	@ docker cp $$(docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) ps -q test):/reports/. reports
-	${CHECK} $(DEV_COMPOSE_FILE) $(DEV_COMPOSE_FILE) test 
+	${CHECK} $(DEV_PROJECT) $(DEV_COMPOSE_FILE) test
 	${INFO} "Testing complete"
 
 build:
