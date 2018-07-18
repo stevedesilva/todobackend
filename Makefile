@@ -103,7 +103,7 @@ tag:
   # foreach specifies 3 parms: 1: tag = current item; 2: $(BUILDTAG_ARGS) = list of items which are the next parms; 3: docker tag .. = defines what action to perform
   # make tags 0.1 latest = docker tag <image id> <registry>/<org>/todobackend:0.1;
   # make tags 0.1 latest = docker tag <image id> <registry>/<org>/todobackend:master;
-	$(foreach tag,$(TAG_ARGS), docker tag $(IMAGE_ID) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(tag);)
+	$(foreach tag,$(TAG_ARGS), docker tag -f $(IMAGE_ID) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(tag);)
 	${INFO} "Tagging complete"
 
 buildtag:
